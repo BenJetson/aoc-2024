@@ -37,5 +37,18 @@ func SolvePuzzle(input aoc.Input) (s aoc.Solution, err error) {
 
 	s.Part1.SaveIntAnswer(totalDistance)
 
+	rightCounts := make(map[int]int)
+	for _, value := range right {
+		rightCounts[value]++
+	}
+
+	var score int
+	for _, value := range left {
+		count := rightCounts[value]
+		score += value * count
+	}
+
+	s.Part2.SaveIntAnswer(score)
+
 	return
 }
