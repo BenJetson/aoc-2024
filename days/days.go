@@ -10,7 +10,6 @@ import (
 
 var Solvers = map[int]aoc.Solver{
 	// BEGIN DAY SOLVERS
-	// 1: day01.SolvePuzzle,
 	1: day01.SolvePuzzle,
 	2: day02.SolvePuzzle,
 	// END DAY SOLVERS
