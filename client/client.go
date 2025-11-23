@@ -178,7 +178,7 @@ func (c *Client) GetPuzzleInput(day int) (string, error) {
 
 	data, err := io.ReadAll(res.Body)
 	if err != nil {
-		return "", fmt.Errorf("cannot read input respone body: %w", err)
+		return "", fmt.Errorf("cannot read input response body: %w", err)
 	}
 
 	return string(data), nil
