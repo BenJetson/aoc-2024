@@ -64,9 +64,8 @@ func (r Report) IsSafeWithDampener() bool {
 		return true // already safe; nothing to do.
 	}
 
-	for idx := 0; idx < len(r); idx++ {
-		r2 := r.Without(idx)
-		if r2.IsSafe() {
+	for idx := range r {
+		if r.Without(idx).IsSafe() {
 			return true
 		}
 	}
