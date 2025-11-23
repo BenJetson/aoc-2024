@@ -1,6 +1,7 @@
 # aoc-2024
 
-![Go Report Card][go-report] [![Build/Tests][build-badge]][build]
+[![Go Report Card Badge][go-report-badge]][go-report]
+[![Build/Tests][build-badge]][build]
 
 This repository contains my solutions to the [2024 Advent of Code][aoc-2024],
 written in [Go][golang].
@@ -117,7 +118,8 @@ make network requests to the AOC servers, please **be respectful**.
 
 The AOC maintainers ask that users do not make frequent automated requests.
 
-[go-report]: https://goreportcard.com/badge/github.com/BenJetson/aoc-2024
+[go-report]: https://goreportcard.com/report/github.com/BenJetson/aoc-2024
+[go-report-badge]: https://goreportcard.com/badge/github.com/BenJetson/aoc-2024
 [build]: https://github.com/BenJetson/aoc-2024/actions/workflows/go.yml
 [build-badge]:
   https://github.com/BenJetson/aoc-2024/actions/workflows/go.yml/badge.svg
