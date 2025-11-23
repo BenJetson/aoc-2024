@@ -32,8 +32,9 @@ func TestSolvers(t *testing.T) {
 			t.Run("part1", func(t *testing.T) {
 				if !knownSolution.Part1.Valid {
 					if solution.Part1.Valid {
-						require.FailNow(t, "part 1 returns an answer, "+
-							"but there is no known answer to compare against")
+						require.FailNowf(t, "part 1 returns an answer, "+
+							"but there is no known answer to compare against",
+							"answer: %s", solution.Part1.String())
 					}
 					t.SkipNow()
 				}
@@ -51,8 +52,9 @@ func TestSolvers(t *testing.T) {
 			t.Run("part2", func(t *testing.T) {
 				if !knownSolution.Part2.Valid {
 					if solution.Part2.Valid {
-						require.FailNow(t, "part 2 returns an answer, "+
-							"but there is no known answer to compare against")
+						require.FailNowf(t, "part 2 returns an answer, "+
+							"but there is no known answer to compare against",
+							"answer: %s", solution.Part2.String())
 					}
 					t.SkipNow()
 				}
