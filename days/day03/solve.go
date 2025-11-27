@@ -8,9 +8,22 @@ import (
 	"github.com/BenJetson/aoc-2024/aoc"
 )
 
-// var doInstrPattern = regexp.MustCompile(`do\(\)`)
-// var dontInstrPattern = regexp.MustCompile(`don't\(\)`)
-var modifierInstrPattern = regexp.MustCompile(`do(n')?t\(\)`)
+type OpCode int
+
+const (
+	OpCodeMul OpCode = iota
+	OpCodeDo
+	OpCodeDoNot
+)
+
+type Instruction struct {
+	Operation OpCode
+	Operands  []int
+}
+
+var doPrefixInstrPattern = regexp.MustCompile(`^do\(\)`)
+var dontPrefixInstrPattern = regexp.MustCompile(`^don't\(\)`)
+var mulPrefixInstrPattern = regexp.MustCompile(`^mul\(([0-9]{1,3}),([0-9]{1,3})\)`)
 var mulInstrPattern = regexp.MustCompile(`mul\(([0-9]{1,3}),([0-9]{1,3})\)`)
 
 func SolvePuzzle(input aoc.Input) (s aoc.Solution, err error) {
@@ -31,42 +44,45 @@ func SolvePuzzle(input aoc.Input) (s aoc.Solution, err error) {
 
 	s.Part1.SaveIntAnswer(acc)
 
-	modifierMatches := modifierInstrPattern.FindAllStringIndex(memory, -1)
-	modifierIndices := make([]int, 1, len(modifierMatches)+2)
-	modifierIndices[0] = 0
-	for _, matchIndices := range modifierMatches {
-		modifierIndices = append(modifierIndices, matchIndices[0])
-	}
-	modifierIndices = append(modifierIndices, len(memory))
-
-	var memoryRanges []string
-	for idx := 0; idx < len(modifierIndices)-1; idx++ {
-		a, b = modifierIndices[idx], modifierIndices[idx+1]
-		memoryRanges = append(memoryRanges, memory[a:b])
-	}
-
 	var doAcc int
 	canDo := true
 
-	for _, memoryRange := range memoryRanges {
-		if strings.HasPrefix(memoryRange, "do()") {
+	for len(memory) > 0 {
+		match := doPrefixInstrPattern.FindStringIndex(memory)
+		if match != nil {
 			canDo = true
-		} else if strings.HasPrefix(memoryRange, "don't()") {
-			canDo = false
+			memory = memory[match[1]:]
+			continue
 		}
 
-		if canDo {
-			matches := mulInstrPattern.FindAllStringSubmatch(memoryRange, -1)
-			for _, match := range matches {
-				if a, err = strconv.Atoi(match[1]); err != nil {
+		match = dontPrefixInstrPattern.FindStringIndex(memory)
+		if match != nil {
+			canDo = false
+			memory = memory[match[1]:]
+			continue
+		}
+
+		match = mulPrefixInstrPattern.FindStringSubmatchIndex(memory)
+		if match != nil {
+			if canDo {
+				a, err = strconv.Atoi(memory[match[2]:match[3]])
+				if err != nil {
 					return
-				} else if b, err = strconv.Atoi(match[2]); err != nil {
+				}
+
+				b, err = strconv.Atoi(memory[match[4]:match[5]])
+				if err != nil {
 					return
 				}
 
 				doAcc += a * b
 			}
+
+			memory = memory[match[1]:]
+			continue
 		}
+
+		memory = memory[1:]
 	}
 
 	s.Part2.SaveIntAnswer(doAcc)
