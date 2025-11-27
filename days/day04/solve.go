@@ -136,6 +136,21 @@ func (g Grid) GetMatchCount(xPos, yPos int, target string) (count int) {
 	return
 }
 
+func (g Grid) IsMasX(xPos, yPos int) (ok bool) {
+	var diag1 string
+	if diag1, ok = g.GetString(xPos-1, yPos-1, DirectionSouthEast, 3); !ok {
+		return
+	}
+
+	var diag2 string
+	if diag2, ok = g.GetString(xPos+1, yPos-1, DirectionSouthWest, 3); !ok {
+		return
+	}
+
+	return (diag1 == "MAS" || diag1 == "SAM") &&
+		(diag2 == "MAS" || diag2 == "SAM")
+}
+
 func SolvePuzzle(input aoc.Input) (s aoc.Solution, err error) {
 	var g Grid
 	for _, line := range input {
@@ -153,5 +168,17 @@ func SolvePuzzle(input aoc.Input) (s aoc.Solution, err error) {
 	}
 
 	s.Part1.SaveIntAnswer(count)
+
+	count = 0
+	for yPos := 0; yPos < g.RowCount(); yPos++ {
+		for xPos := 0; xPos < g.ColCount(); xPos++ {
+			if g[yPos][xPos] == 'A' && g.IsMasX(xPos, yPos) {
+				count++
+			}
+		}
+	}
+
+	s.Part2.SaveIntAnswer(count)
+
 	return
 }
