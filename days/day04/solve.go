@@ -69,10 +69,6 @@ func (g Grid) GetString(
 	dir Direction,
 	length int,
 ) (out string, ok bool) {
-	// defer func(xPosOg, yPosOg int, s *string) {
-	// 	fmt.Printf("X %03d Y %03d D %s: %s (%t)\n",
-	// 		xPosOg, yPosOg, dir.String(), *s, ok)
-	// }(xPos, yPos, &out)
 	if length < 1 {
 		return "", false
 	}
@@ -99,8 +95,6 @@ func (g Grid) GetString(
 			xPos += xMod
 			yPos += yMod
 		}
-
-		// fmt.Printf("check X %03d Y %03d I %t\n", xPos, yPos, g.InRange(xPos, yPos))
 
 		if !g.InRange(xPos, yPos) {
 			return
