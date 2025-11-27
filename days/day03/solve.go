@@ -8,19 +8,6 @@ import (
 	"github.com/BenJetson/aoc-2024/aoc"
 )
 
-type OpCode int
-
-const (
-	OpCodeMul OpCode = iota
-	OpCodeDo
-	OpCodeDoNot
-)
-
-type Instruction struct {
-	Operation OpCode
-	Operands  []int
-}
-
 var doPrefixInstrPattern = regexp.MustCompile(`^do\(\)`)
 var dontPrefixInstrPattern = regexp.MustCompile(`^don't\(\)`)
 var mulPrefixInstrPattern = regexp.MustCompile(`^mul\(([0-9]{1,3}),([0-9]{1,3})\)`)
