@@ -10,6 +10,8 @@ import (
 )
 
 var dayFlag = flag.Int("day", 0, "day of the advent calendar, 1-25")
+var exampleFlag = flag.Bool("example", false,
+	"optionally use example input")
 var inputFileFlag = flag.String("input", "",
 	"optional filename to use for input, other than the default")
 
@@ -20,7 +22,9 @@ func main() {
 		log.Fatal("invalid or missing AoC day number")
 	}
 
-	if len(*inputFileFlag) < 1 {
+	if *exampleFlag {
+		*inputFileFlag = aoc.GetExampleFilename(*dayFlag)
+	} else if len(*inputFileFlag) < 1 {
 		*inputFileFlag = aoc.GetInputFilename(*dayFlag)
 	}
 

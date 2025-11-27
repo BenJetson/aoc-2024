@@ -3,6 +3,10 @@
 run: check
 	go run ./cmd/run --day $(AOC_DAY)
 
+.PHONY: run-example
+run-example:
+	go run ./cmd/run --day $(AOC_DAY) --example
+
 .PHONY: check
 check:
 	@if [ -z "$(AOC_DAY)" ]; then \

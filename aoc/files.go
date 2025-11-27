@@ -11,6 +11,10 @@ func GetInputFilename(day int) string {
 	return fmt.Sprintf("days/day%02d/input.txt", day)
 }
 
+func GetExampleFilename(day int) string {
+	return fmt.Sprintf("days/day%02d/example.txt", day)
+}
+
 func GetInput(day int) (Input, error) {
 	inputFilename := GetInputFilename(day)
 	return utilities.ReadLinesFromFile(inputFilename)
