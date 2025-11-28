@@ -22,7 +22,7 @@ func TestSliceStringsToInts(t *testing.T) {
 		{
 			alias:  "empty",
 			input:  []string{},
-			expect: nil,
+			expect: []int{},
 		},
 		{
 			alias: "numbers",
