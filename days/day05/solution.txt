@@ -1,2 +1,2 @@
 Part one answer is: 6041
-Part two answer is: blank
+Part two answer is: 4884

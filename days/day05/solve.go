@@ -12,8 +12,8 @@ import (
 type PageNumber int
 
 type Rule struct {
-	Page  PageNumber
-	After PageNumber
+	Page   PageNumber
+	Before PageNumber
 }
 
 func lineToRule(line string) (Rule, error) {
@@ -25,8 +25,8 @@ func lineToRule(line string) (Rule, error) {
 		return Rule{}, fmt.Errorf("unexpected rule values (%d)", len(values))
 	}
 	return Rule{
-		Page:  values[0],
-		After: values[1],
+		Page:   values[0],
+		Before: values[1],
 	}, nil
 }
 
@@ -38,6 +38,41 @@ func (u UpdatedManual) MiddlePage() PageNumber {
 	}
 	idx := (len(u) / 2) // should guaranteed to be odd page count.
 	return u[idx]
+}
+
+func (u UpdatedManual) IsValid(rules []Rule) bool {
+	for _, r := range rules {
+		idx := slices.Index(u, r.Page)
+		otherIdx := slices.Index(u, r.Before)
+		if idx < 0 || otherIdx < 0 {
+			continue
+		} else if otherIdx < idx {
+			return false
+		}
+	}
+	return true
+}
+
+func (u UpdatedManual) Correct(rules []Rule) (m UpdatedManual) {
+	m = make(UpdatedManual, 0, len(u))
+	m = append(m, u...)
+
+	for !m.IsValid(rules) {
+		for _, r := range rules {
+			idx := slices.Index(m, r.Page)
+			otherIdx := slices.Index(m, r.Before)
+			if idx < 0 || otherIdx < 0 {
+				continue
+			} else if otherIdx > idx {
+				continue
+			}
+
+			m = slices.Delete(m, otherIdx, otherIdx+1)
+			m = slices.Insert(m, idx, r.Before)
+		}
+	}
+
+	return m
 }
 
 func lineToUpdatedManual(line string) (UpdatedManual, error) {
@@ -78,27 +113,19 @@ func SolvePuzzle(input aoc.Input) (s aoc.Solution, err error) {
 	}
 
 	// XXX these linear scans are inefficient, but get the job done.
-	var acc int
+	// Using a map for rules would be better.
+	var acc, acc2 int
 	for _, u := range updates {
-		var invalid bool
-		for idx, page := range u {
-			for _, r := range rules {
-				if page == r.Page {
-					otherIdx := slices.Index(u, r.After)
-					if otherIdx >= 0 && idx > otherIdx {
-						invalid = true
-					}
-				}
-			}
-
-		}
-
-		if !invalid {
+		if u.IsValid(rules) {
 			acc += int(u.MiddlePage())
+		} else {
+			m := u.Correct(rules)
+			acc2 += int(m.MiddlePage())
 		}
 	}
 
 	s.Part1.SaveIntAnswer(acc)
+	s.Part2.SaveIntAnswer(acc2)
 
 	return
 }
