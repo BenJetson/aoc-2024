@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/BenJetson/aoc-2024/aoc"
 	"github.com/BenJetson/aoc-2024/days"
 	"github.com/BenJetson/aoc-2024/utilities"
 )
@@ -65,6 +66,17 @@ func main() {
 	err = os.WriteFile("days/"+dayName+"/README.md", []byte(readmeTxt), 0644)
 	if err != nil {
 		log.Fatalf("could not write readme file: %v\n", err)
+	}
+
+	err = utilities.CreateEmptyFile(
+		aoc.GetInputFilename(*dayFlag, aoc.ProblemSetExample))
+	if err != nil {
+		log.Fatalf("could not create example input file: %v", err)
+	}
+
+	err = aoc.WriteSolution(*dayFlag, aoc.ProblemSetExample, aoc.Solution{})
+	if err != nil {
+		log.Fatalf("could not create example solution file: %v", err)
 	}
 
 	daysSourceLines, err := utilities.ReadLinesFromFile("days/days.go")

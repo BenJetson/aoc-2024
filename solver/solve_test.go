@@ -23,52 +23,61 @@ func TestSolvers(t *testing.T) {
 		dayStr := fmt.Sprintf("day%02d", day)
 
 		t.Run(dayStr, func(t *testing.T) {
-			knownSolution, err := aoc.GetSolution(day)
-			require.NoError(t, err, "require solution to check")
+			for _, ps := range []aoc.ProblemSet{
+				aoc.ProblemSetExample,
+				aoc.ProblemSetMy,
+			} {
+				t.Run(fmt.Sprintf("%s_input", ps), func(t *testing.T) {
+					knownSolution, err := aoc.GetSolution(day, ps)
+					require.NoError(t, err, "require solution to check")
 
-			solution, err := RunForDay(day)
-			require.NoError(t, err, "expect no error when solving")
+					solution, err := RunForDay(day, ps)
+					require.NoError(t, err, "expect no error when solving")
 
-			t.Run("part1", func(t *testing.T) {
-				if !knownSolution.Part1.Valid {
-					if solution.Part1.Valid {
-						require.FailNowf(t, "part 1 returns an answer, "+
-							"but there is no known answer to compare against",
-							"answer: %s", solution.Part1.String())
-					}
-					t.SkipNow()
-				}
+					t.Run("part1", func(t *testing.T) {
+						if !knownSolution.Part1.Valid {
+							if solution.Part1.Valid {
+								require.FailNowf(t,
+									"part 1 returns an answer, but there is "+
+										"no known answer to compare against",
+									"answer: %s", solution.Part1.String())
+							}
+							t.SkipNow()
+						}
 
-				assert.True(t, solution.Part1.Valid,
-					"part 1 answer ought to be valid")
-				if solution.Part1.Valid {
-					assert.Equal(t,
-						knownSolution.Part1.Value,
-						solution.Part1.Value,
-						"part 1 answer ought to match known answer",
-					)
-				}
-			})
-			t.Run("part2", func(t *testing.T) {
-				if !knownSolution.Part2.Valid {
-					if solution.Part2.Valid {
-						require.FailNowf(t, "part 2 returns an answer, "+
-							"but there is no known answer to compare against",
-							"answer: %s", solution.Part2.String())
-					}
-					t.SkipNow()
-				}
+						assert.True(t, solution.Part1.Valid,
+							"part 1 answer ought to be valid")
+						if solution.Part1.Valid {
+							assert.Equal(t,
+								knownSolution.Part1.Value,
+								solution.Part1.Value,
+								"part 1 answer ought to match known answer",
+							)
+						}
+					})
+					t.Run("part2", func(t *testing.T) {
+						if !knownSolution.Part2.Valid {
+							if solution.Part2.Valid {
+								require.FailNowf(t,
+									"part 2 returns an answer, but there is "+
+										"no known answer to compare against",
+									"answer: %s", solution.Part2.String())
+							}
+							t.SkipNow()
+						}
 
-				assert.True(t, solution.Part2.Valid,
-					"part 2 answer ought to be valid")
-				if solution.Part2.Valid {
-					assert.Equal(t,
-						knownSolution.Part2.Value,
-						solution.Part2.Value,
-						"part 2 answer ought to match known answer",
-					)
-				}
-			})
+						assert.True(t, solution.Part2.Valid,
+							"part 2 answer ought to be valid")
+						if solution.Part2.Valid {
+							assert.Equal(t,
+								knownSolution.Part2.Value,
+								solution.Part2.Value,
+								"part 2 answer ought to match known answer",
+							)
+						}
+					})
+				})
+			}
 		})
 	}
 }

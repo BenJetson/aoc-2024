@@ -1,10 +1,23 @@
 package utilities
 
 import (
+	"fmt"
 	"io/ioutil"
+	"os"
 )
 
 const linefeed = '\n'
+
+// CreateEmptyFile creates an empty file, then immediately closes its file
+// handle.
+func CreateEmptyFile(filename string) error {
+	if f, err := os.Create(filename); err != nil {
+		return fmt.Errorf("could not create file: %w", err)
+	} else if err = f.Close(); err != nil {
+		return fmt.Errorf("could not close file: %w", err)
+	}
+	return nil
+}
 
 // ReadLinesFromFile reads the entire file specified, and returns a slice
 // of strings

@@ -33,7 +33,7 @@ func main() {
 		log.Fatalf("failed to get puzzle input: %v\n", err)
 	}
 
-	inputFilename := aoc.GetInputFilename(*dayFlag)
+	inputFilename := aoc.GetInputFilename(*dayFlag, aoc.ProblemSetMy)
 
 	err = os.WriteFile(inputFilename, []byte(input), 0644)
 	if err != nil {

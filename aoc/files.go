@@ -7,21 +7,31 @@ import (
 	"github.com/BenJetson/aoc-2024/utilities"
 )
 
-func GetInputFilename(day int) string {
-	return fmt.Sprintf("days/day%02d/input.txt", day)
+func GetDayDirectory(day int) string {
+	return fmt.Sprintf("days/day%02d", day)
 }
 
-func GetExampleFilename(day int) string {
-	return fmt.Sprintf("days/day%02d/example.txt", day)
+// A ProblemSet describes which set of input and solutions to use.
+type ProblemSet string
+
+const (
+	// ProblemSetMy represents the player's individual input and solution.
+	ProblemSetMy ProblemSet = "my"
+	// ProblemSetExample represents the example input and solution.
+	ProblemSetExample ProblemSet = "example"
+)
+
+func GetInputFilename(day int, ps ProblemSet) string {
+	return fmt.Sprintf("%s/%s_input.txt", GetDayDirectory(day), ps)
 }
 
-func GetInput(day int) (Input, error) {
-	inputFilename := GetInputFilename(day)
+func GetInput(day int, ps ProblemSet) (Input, error) {
+	inputFilename := GetInputFilename(day, ps)
 	return utilities.ReadLinesFromFile(inputFilename)
 }
 
-func GetSolutionFilename(day int) string {
-	return fmt.Sprintf("days/day%02d/solution.txt", day)
+func GetSolutionFilename(day int, ps ProblemSet) string {
+	return fmt.Sprintf("%s/%s_solution.txt", GetDayDirectory(day), ps)
 }
 
 func scanAnswer(line, label string) (Answer, error) {
@@ -50,10 +60,10 @@ func scanAnswer(line, label string) (Answer, error) {
 	return a, nil
 }
 
-func GetSolution(day int) (Solution, error) {
+func GetSolution(day int, ps ProblemSet) (Solution, error) {
 	var s Solution
 
-	solutionFilename := GetSolutionFilename(day)
+	solutionFilename := GetSolutionFilename(day, ps)
 	lines, err := utilities.ReadLinesFromFile(solutionFilename)
 	if err != nil {
 		return s, fmt.Errorf(
@@ -76,8 +86,8 @@ func GetSolution(day int) (Solution, error) {
 	return s, nil
 }
 
-func WriteSolution(day int, s Solution) error {
-	solutionFilename := GetSolutionFilename(day)
+func WriteSolution(day int, ps ProblemSet, s Solution) error {
+	solutionFilename := GetSolutionFilename(day, ps)
 	solutionStr := s.String()
 
 	err := os.WriteFile(solutionFilename, []byte(solutionStr), 0644)

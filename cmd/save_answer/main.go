@@ -29,12 +29,14 @@ func main() {
 		log.Fatalln("this day is not initialized")
 	}
 
-	foundSolution, err := solver.RunForDay(*dayFlag)
+	ps := aoc.ProblemSetMy
+
+	foundSolution, err := solver.RunForDay(*dayFlag, ps)
 	if err != nil {
 		log.Fatalf("error while solving puzzle: %v\n", err)
 	}
 
-	knownSolution, err := aoc.GetSolution(*dayFlag)
+	knownSolution, err := aoc.GetSolution(*dayFlag, ps)
 	if errors.Is(err, os.ErrNotExist) {
 		knownSolution = aoc.Solution{}
 	} else if err != nil {
@@ -52,7 +54,7 @@ func main() {
 	fmt.Println(knownSolution.String())
 
 	err = os.WriteFile(
-		aoc.GetSolutionFilename(*dayFlag),
+		aoc.GetSolutionFilename(*dayFlag, ps),
 		[]byte(knownSolution.String()),
 		0644,
 	)

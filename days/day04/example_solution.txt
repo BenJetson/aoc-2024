@@ -1,0 +1,2 @@
+Part one answer is: 18
+Part two answer is: 9

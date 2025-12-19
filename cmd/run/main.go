@@ -23,9 +23,15 @@ func main() {
 	}
 
 	if *exampleFlag {
-		*inputFileFlag = aoc.GetExampleFilename(*dayFlag)
+		*inputFileFlag = aoc.GetInputFilename(
+			*dayFlag,
+			aoc.ProblemSetExample,
+		)
 	} else if len(*inputFileFlag) < 1 {
-		*inputFileFlag = aoc.GetInputFilename(*dayFlag)
+		*inputFileFlag = aoc.GetInputFilename(
+			*dayFlag,
+			aoc.ProblemSetMy,
+		)
 	}
 
 	solution, err := solver.RunForDayWithInput(*dayFlag, *inputFileFlag)

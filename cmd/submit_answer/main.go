@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/BenJetson/aoc-2024/aoc"
 	"github.com/BenJetson/aoc-2024/client"
 	"github.com/BenJetson/aoc-2024/days"
 	"github.com/BenJetson/aoc-2024/solver"
@@ -32,7 +33,9 @@ func main() {
 		log.Fatalf("failed to initailize client: %v\n", err)
 	}
 
-	solution, err := solver.RunForDay(*dayFlag)
+	ps := aoc.ProblemSetMy
+
+	solution, err := solver.RunForDay(*dayFlag, ps)
 	if err != nil {
 		log.Fatalf("error while solving puzzle: %v\n", err)
 	}

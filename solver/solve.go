@@ -25,7 +25,7 @@ func RunForDayWithInput(day int, inputFile string) (sol aoc.Solution, err error)
 	return solver(lines)
 }
 
-func RunForDay(day int) (aoc.Solution, error) {
-	inputFile := aoc.GetInputFilename(day)
+func RunForDay(day int, ps aoc.ProblemSet) (aoc.Solution, error) {
+	inputFile := aoc.GetInputFilename(day, ps)
 	return RunForDayWithInput(day, inputFile)
 }
