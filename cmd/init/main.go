@@ -68,15 +68,20 @@ func main() {
 		log.Fatalf("could not write readme file: %v\n", err)
 	}
 
-	err = utilities.CreateEmptyFile(
-		aoc.GetInputFilename(*dayFlag, aoc.ProblemSetExample))
-	if err != nil {
-		log.Fatalf("could not create example input file: %v", err)
-	}
+	// Make empty files for each problem set.
+	for _, ps := range []aoc.ProblemSet{
+		aoc.ProblemSetExample,
+		aoc.ProblemSetMy,
+	} {
+		err = utilities.CreateEmptyFile(aoc.GetInputFilename(*dayFlag, ps))
+		if err != nil {
+			log.Fatalf("could not create %s input file: %v", ps, err)
+		}
 
-	err = aoc.WriteSolution(*dayFlag, aoc.ProblemSetExample, aoc.Solution{})
-	if err != nil {
-		log.Fatalf("could not create example solution file: %v", err)
+		err = aoc.WriteSolution(*dayFlag, ps, aoc.Solution{})
+		if err != nil {
+			log.Fatalf("could not create %s solution file: %v", ps, err)
+		}
 	}
 
 	daysSourceLines, err := utilities.ReadLinesFromFile("days/days.go")
